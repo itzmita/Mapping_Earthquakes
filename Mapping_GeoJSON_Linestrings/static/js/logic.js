@@ -12,26 +12,43 @@ attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap
     accessToken: API_KEY
 });
 
-// Accessing the airport GeoJSON URL
-let airportData = "https://raw.githubusercontent.com/itzmita/Mapping_Earthquakes/Mapping_GeoJSON_Points/majorAirports.json";
+
 // Accessing the Toronto airline routes GeoJSON URL.
-let torontoData = "https://raw.githubusercontent.com/<GitHub_name>/Mapping_Earthquakes/main/torontoRoutes.json";
+let torontoData = "https://raw.githubusercontent.com/itzmita/Mapping_Earthquakes/Mapping_GeoJSON_Linestrings/torontoRoutes.json";
 
 // Grabbing our GeoJSON data.
-d3.json(airportData).then(function(data) {
+// d3.json(airportData).then(function(data) {
+//     console.log(data);
+//   // Creating a GeoJSON layer with the retrieved data.
+//   L.geoJSON(data, {
+//     onEachFeature: function(feature, layer) {
+//         console.log(layer);
+//         layer.bindPopup("<h2>" + 'Airport Code: ' + feature.properties.faa + "</h2>" + "<h2>" + 'Airport Name: ' + feature.properties.name + "</h2>"  )
+//     }  }).addTo(map);
+// });
+
+// Create a style for the lines.
+let myStyle = {
+    color: "#ffffa1",
+    weight: 2
+}
+
+// Grabbing our GeoJSON data.
+d3.json(torontoData).then(function(data) {
     console.log(data);
   // Creating a GeoJSON layer with the retrieved data.
-  L.geoJSON(data, {
-    onEachFeature: function(feature, layer) {
-        console.log(layer);
-        layer.bindPopup("<h2>" + 'Airport Code: ' + feature.properties.faa + "</h2>" + "<h2>" + 'Airport Name: ' + feature.properties.name + "</h2>"  )
-    }  }).addTo(map);
+    L.geoJSON(data, {
+        style: myStyle,
+        onEachFeature: function(feature, layer) {
+            // console.log(layer);
+            layer.bindPopup("<h2>" + 'Airline: ' + feature.properties.airline + "</h2>" + "<h2>" + 'Destination: ' + feature.properties.dst + "</h2>"  )
+        }  }).addTo(map);
 });
 
 // Create a base layer that holds both maps.
 let baseMaps = {
-    Street: streets,
-    Dark: dark
+    'Day Navigation': streets,
+    'Night Navigation': dark
   };
 
 // Create the map object with center, zoom level and default layer.
